@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/3MileBuffer_0.js"></script>
+        <script src="data/Roads_1.js"></script>
+        <script src="data/HIGHWAYS_2.js"></script>
+        <script src="data/ZoningGrowthAddresscopy_3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[37.1585780283486,-104.5351252695395],[37.18473691422012,-104.49372064933215]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        function pop_3MileBuffer_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+        }
+
+        function style_3MileBuffer_0_0() {
+            return {
+                pane: 'pane_3MileBuffer_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_3MileBuffer_0');
+        map.getPane('pane_3MileBuffer_0').style.zIndex = 400;
+        map.getPane('pane_3MileBuffer_0').style['mix-blend-mode'] = 'normal';
+        var layer_3MileBuffer_0 = new L.geoJson(json_3MileBuffer_0, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_3MileBuffer_0',
+            layerName: 'layer_3MileBuffer_0',
+            pane: 'pane_3MileBuffer_0',
+            onEachFeature: pop_3MileBuffer_0,
+            style: style_3MileBuffer_0_0,
+        });
+        bounds_group.addLayer(layer_3MileBuffer_0);
+        map.addLayer(layer_3MileBuffer_0);
+        function pop_Roads_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SEG_LENGTH'] !== null ? autolinker.link(feature.properties['SEG_LENGTH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ROUTENAME'] !== null ? autolinker.link(feature.properties['ROUTENAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Roads_1_0(feature) {
+            switch(String(feature.properties['q2wHide_FUNCCLASSI'])) {
+                default:
+                    return {
+                pane: 'pane_Roads_1',
+                opacity: 1,
+                color: 'rgba(90,247,247,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '4':
+                    return {
+                pane: 'pane_Roads_1',
+                opacity: 1,
+                color: 'rgba(166,53,143,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '5':
+                    return {
+                pane: 'pane_Roads_1',
+                opacity: 1,
+                color: 'rgba(203,27,79,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '6':
+                    return {
+                pane: 'pane_Roads_1',
+                opacity: 1,
+                color: 'rgba(245,114,114,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case '7':
+                    return {
+                pane: 'pane_Roads_1',
+                opacity: 1,
+                color: 'rgba(250,161,83,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'R':
+                    return {
+                pane: 'pane_Roads_1',
+                opacity: 1,
+                color: 'rgba(171,152,163,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Roads_1');
+        map.getPane('pane_Roads_1').style.zIndex = 401;
+        map.getPane('pane_Roads_1').style['mix-blend-mode'] = 'normal';
+        var layer_Roads_1 = new L.geoJson(json_Roads_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Roads_1',
+            layerName: 'layer_Roads_1',
+            pane: 'pane_Roads_1',
+            onEachFeature: pop_Roads_1,
+            style: style_Roads_1_0,
+        });
+        bounds_group.addLayer(layer_Roads_1);
+        map.addLayer(layer_Roads_1);
+        function pop_HIGHWAYS_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ROUTE'] !== null ? autolinker.link(feature.properties['ROUTE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_HIGHWAYS_2_0() {
+            return {
+                pane: 'pane_HIGHWAYS_2',
+                opacity: 1,
+                color: 'rgba(196,60,57,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_HIGHWAYS_2');
+        map.getPane('pane_HIGHWAYS_2').style.zIndex = 402;
+        map.getPane('pane_HIGHWAYS_2').style['mix-blend-mode'] = 'normal';
+        var layer_HIGHWAYS_2 = new L.geoJson(json_HIGHWAYS_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_HIGHWAYS_2',
+            layerName: 'layer_HIGHWAYS_2',
+            pane: 'pane_HIGHWAYS_2',
+            onEachFeature: pop_HIGHWAYS_2,
+            style: style_HIGHWAYS_2_0,
+        });
+        bounds_group.addLayer(layer_HIGHWAYS_2);
+        map.addLayer(layer_HIGHWAYS_2);
+        function pop_ZoningGrowthAddresscopy_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Acres</th>\
+                        <td>' + (feature.properties['Acres'] !== null ? autolinker.link(feature.properties['Acres'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZoneClass</th>\
+                        <td>' + (feature.properties['ZoneClass'] !== null ? autolinker.link(feature.properties['ZoneClass'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GrowthClas</th>\
+                        <td>' + (feature.properties['GrowthClas'] !== null ? autolinker.link(feature.properties['GrowthClas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LegalDescr</th>\
+                        <td>' + (feature.properties['LegalDescr'] !== null ? autolinker.link(feature.properties['LegalDescr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AddressFSA'] !== null ? autolinker.link(feature.properties['AddressFSA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">AddressSTRUCTURE</th>\
+                        <td>' + (feature.properties['AddressSTRUCTURE'] !== null ? autolinker.link(feature.properties['AddressSTRUCTURE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ADO_Status</th>\
+                        <td>' + (feature.properties['ADO_Status'] !== null ? autolinker.link(feature.properties['ADO_Status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ZoningGrowthAddresscopy_3_0(feature) {
+            switch(String(feature.properties['ADO_Status'])) {
+                case 'Dilapidated':
+                    return {
+                pane: 'pane_ZoningGrowthAddresscopy_3',
+                opacity: 1,
+                color: 'rgba(254,221,10,0.5)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,11,53,0.5)',
+                interactive: true,
+            }
+                    break;
+                case 'Moderate':
+                    return {
+                pane: 'pane_ZoningGrowthAddresscopy_3',
+                opacity: 1,
+                color: 'rgba(238,11,53,0.5)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(241,142,13,0.5)',
+                interactive: true,
+            }
+                    break;
+                case 'poor':
+                    return {
+                pane: 'pane_ZoningGrowthAddresscopy_3',
+                opacity: 1,
+                color: 'rgba(35,251,35,0.5)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(241,148,27,0.5)',
+                interactive: true,
+            }
+                    break;
+                case 'Poor':
+                    return {
+                pane: 'pane_ZoningGrowthAddresscopy_3',
+                opacity: 1,
+                color: 'rgba(35,248,35,0.5)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(241,148,27,0.5)',
+                interactive: true,
+            }
+                    break;
+                case 'Revised':
+                    return {
+                pane: 'pane_ZoningGrowthAddresscopy_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.5)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(145,203,168,0.5)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_ZoningGrowthAddresscopy_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.5)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(43,131,186,0.5)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_ZoningGrowthAddresscopy_3');
+        map.getPane('pane_ZoningGrowthAddresscopy_3').style.zIndex = 403;
+        map.getPane('pane_ZoningGrowthAddresscopy_3').style['mix-blend-mode'] = 'normal';
+        var layer_ZoningGrowthAddresscopy_3 = new L.geoJson(json_ZoningGrowthAddresscopy_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ZoningGrowthAddresscopy_3',
+            layerName: 'layer_ZoningGrowthAddresscopy_3',
+            pane: 'pane_ZoningGrowthAddresscopy_3',
+            onEachFeature: pop_ZoningGrowthAddresscopy_3,
+            style: style_ZoningGrowthAddresscopy_3_0,
+        });
+        bounds_group.addLayer(layer_ZoningGrowthAddresscopy_3);
+        map.addLayer(layer_ZoningGrowthAddresscopy_3);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Zoning -Growth-Address copy<br /><table><tr><td style="text-align: center;"><img src="legend/ZoningGrowthAddresscopy_3_Dilapidated0.png" /></td><td>Dilapidated</td></tr><tr><td style="text-align: center;"><img src="legend/ZoningGrowthAddresscopy_3_Moderate1.png" /></td><td>Moderate</td></tr><tr><td style="text-align: center;"><img src="legend/ZoningGrowthAddresscopy_3_poor2.png" /></td><td>poor</td></tr><tr><td style="text-align: center;"><img src="legend/ZoningGrowthAddresscopy_3_Poor3.png" /></td><td>Poor</td></tr><tr><td style="text-align: center;"><img src="legend/ZoningGrowthAddresscopy_3_Revised4.png" /></td><td>Revised</td></tr><tr><td style="text-align: center;"><img src="legend/ZoningGrowthAddresscopy_3_5.png" /></td><td></td></tr></table>': layer_ZoningGrowthAddresscopy_3,'<img src="legend/HIGHWAYS_2.png" /> HIGHWAYS': layer_HIGHWAYS_2,'Roads<br /><table><tr><td style="text-align: center;"><img src="legend/Roads_1_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/Roads_1_41.png" /></td><td>4</td></tr><tr><td style="text-align: center;"><img src="legend/Roads_1_52.png" /></td><td>5</td></tr><tr><td style="text-align: center;"><img src="legend/Roads_1_63.png" /></td><td>6</td></tr><tr><td style="text-align: center;"><img src="legend/Roads_1_74.png" /></td><td>7</td></tr><tr><td style="text-align: center;"><img src="legend/Roads_1_R5.png" /></td><td>R</td></tr></table>': layer_Roads_1,'<img src="legend/3MileBuffer_0.png" /> 3-Mile Buffer': layer_3MileBuffer_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_Roads_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['ROUTENAME'] !== null?String('<div style="color: #323232; font-size: 5pt; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['ROUTENAME']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Roads_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_HIGHWAYS_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['ROUTE'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['ROUTE']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_HIGHWAYS_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_Roads_1,layer_HIGHWAYS_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Roads_1,layer_HIGHWAYS_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Roads_1,layer_HIGHWAYS_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Roads_1,layer_HIGHWAYS_2]);
+        });
+        </script>
+    </body>
+</html>
